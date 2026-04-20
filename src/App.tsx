@@ -5,14 +5,21 @@ import {
   Search,
   LogOut,
   Menu,
-  X
+  X,
+  Users,
+  CheckSquare
 } from 'lucide-react'
 import { useState } from 'react'
+import { AgentsPage } from './pages/AgentsPage'
+import { TasksPage } from './pages/TasksPage'
 import { useAgentLogs } from './hooks/useAgentLogs'
 import { LogsTable } from './components/LogsTable'
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [currentPage, setCurrentPage] = useState<'dashboard' | 'agents' | 'tasks'>('agents')
+  
+  // Dashboard logic preserved
   const { logs, isLoading, error } = useAgentLogs()
   const [filter, setFilter] = useState('all')
 
@@ -39,10 +46,18 @@ function App() {
             </button>
           </div>
           <nav className="space-y-2">
-            <a href="#" className="flex items-center gap-3 px-3 py-2 text-indigo-400 bg-slate-800/50 rounded-lg">
+            <button onClick={() => { setCurrentPage('dashboard'); setSidebarOpen(false) }} className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg ${currentPage === 'dashboard' ? 'text-indigo-400 bg-slate-800/50' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'}`}>
               <LayoutDashboard className="w-5 h-5" />
               Dashboard
-            </a>
+            </button>
+            <button onClick={() => { setCurrentPage('agents'); setSidebarOpen(false) }} className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg ${currentPage === 'agents' ? 'text-indigo-400 bg-slate-800/50' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'}`}>
+              <Users className="w-5 h-5" />
+              Agents
+            </button>
+            <button onClick={() => { setCurrentPage('tasks'); setSidebarOpen(false) }} className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg ${currentPage === 'tasks' ? 'text-indigo-400 bg-slate-800/50' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'}`}>
+              <CheckSquare className="w-5 h-5" />
+              Tâches
+            </button>
             <a href="#" className="flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-lg">
               <Settings className="w-5 h-5" />
               Settings
@@ -61,10 +76,18 @@ function App() {
             </h1>
           </div>
           <nav className="mt-8 flex-1 px-4 space-y-2">
-            <a href="#" className="flex items-center gap-3 px-3 py-2 text-indigo-400 bg-slate-800/50 rounded-lg">
+            <button onClick={() => setCurrentPage('dashboard')} className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg ${currentPage === 'dashboard' ? 'text-indigo-400 bg-slate-800/50' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'}`}>
               <LayoutDashboard className="w-5 h-5" />
               Dashboard
-            </a>
+            </button>
+            <button onClick={() => setCurrentPage('agents')} className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg ${currentPage === 'agents' ? 'text-indigo-400 bg-slate-800/50' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'}`}>
+              <Users className="w-5 h-5" />
+              Agents
+            </button>
+            <button onClick={() => setCurrentPage('tasks')} className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg ${currentPage === 'tasks' ? 'text-indigo-400 bg-slate-800/50' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'}`}>
+              <CheckSquare className="w-5 h-5" />
+              Tâches
+            </button>
             <a href="#" className="flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-lg">
               <Settings className="w-5 h-5" />
               Settings
@@ -116,7 +139,7 @@ function App() {
                   <input
                     id="search-field"
                     className="block w-full h-full pl-8 pr-3 py-2 border-transparent text-slate-900 placeholder-slate-500 focus:outline-none focus:placeholder-slate-400 focus:ring-0 focus:border-transparent sm:text-sm"
-                    placeholder="Search logs..."
+                    placeholder="Search..."
                     type="search"
                     name="search"
                   />
@@ -133,98 +156,70 @@ function App() {
         </div>
 
         <main className="flex-1 pb-8">
-          <div className="mt-8">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <h2 className="text-2xl font-bold leading-tight text-slate-900">Agent Activity Dashboard</h2>
-              
-              {/* Stats */}
-              <div className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-3">
-                <div className="bg-white overflow-hidden shadow rounded-lg border border-slate-200">
-                  <div className="p-5">
-                    <div className="flex items-center">
-                      <div className="flex-shrink-0 bg-indigo-100 rounded-md p-3">
-                        <LayoutDashboard className="h-6 w-6 text-indigo-600" />
-                      </div>
-                      <div className="ml-5 w-0 flex-1">
-                        <dl>
-                          <dt className="text-sm font-medium text-slate-500 truncate">Total Logs</dt>
-                          <dd className="text-3xl font-semibold text-slate-900">{logs.length}</dd>
-                        </dl>
-                      </div>
+          <div className="mt-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {currentPage === 'agents' && <AgentsPage />}
+            {currentPage === 'tasks' && <TasksPage />}
+            {currentPage === 'dashboard' && (
+              <div>
+                <h2 className="text-2xl font-bold leading-tight text-slate-900 mb-6">Dashboard System Logs</h2>
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-3 mb-8">
+                  <div className="bg-white overflow-hidden shadow rounded-lg border border-slate-200 p-5 flex items-center">
+                    <div className="flex-shrink-0 bg-indigo-100 rounded-md p-3">
+                      <LayoutDashboard className="h-6 w-6 text-indigo-600" />
+                    </div>
+                    <div className="ml-5 w-0 flex-1">
+                      <dl>
+                        <dt className="text-sm font-medium text-slate-500 truncate">Total Logs</dt>
+                        <dd className="text-3xl font-semibold text-slate-900">{logs.length}</dd>
+                      </dl>
+                    </div>
+                  </div>
+                  <div className="bg-white overflow-hidden shadow rounded-lg border border-slate-200 p-5 flex items-center">
+                    <div className="flex-shrink-0 bg-green-100 rounded-md p-3">
+                      <LayoutDashboard className="h-6 w-6 text-green-600" />
+                    </div>
+                    <div className="ml-5 w-0 flex-1">
+                      <dl>
+                        <dt className="text-sm font-medium text-slate-500 truncate">Completed</dt>
+                        <dd className="text-3xl font-semibold text-slate-900">{logs.filter(l => l.status === 'completed').length}</dd>
+                      </dl>
+                    </div>
+                  </div>
+                  <div className="bg-white overflow-hidden shadow rounded-lg border border-slate-200 p-5 flex items-center">
+                    <div className="flex-shrink-0 bg-red-100 rounded-md p-3">
+                      <LayoutDashboard className="h-6 w-6 text-red-600" />
+                    </div>
+                    <div className="ml-5 w-0 flex-1">
+                      <dl>
+                        <dt className="text-sm font-medium text-slate-500 truncate">Failed</dt>
+                        <dd className="text-3xl font-semibold text-slate-900">{logs.filter(l => l.status === 'failed').length}</dd>
+                      </dl>
                     </div>
                   </div>
                 </div>
-                <div className="bg-white overflow-hidden shadow rounded-lg border border-slate-200">
-                  <div className="p-5">
-                    <div className="flex items-center">
-                      <div className="flex-shrink-0 bg-green-100 rounded-md p-3">
-                        <LayoutDashboard className="h-6 w-6 text-green-600" />
-                      </div>
-                      <div className="ml-5 w-0 flex-1">
-                        <dl>
-                          <dt className="text-sm font-medium text-slate-500 truncate">Completed</dt>
-                          <dd className="text-3xl font-semibold text-slate-900">
-                            {logs.filter(l => l.status === 'completed').length}
-                          </dd>
-                        </dl>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-white overflow-hidden shadow rounded-lg border border-slate-200">
-                  <div className="p-5">
-                    <div className="flex items-center">
-                      <div className="flex-shrink-0 bg-red-100 rounded-md p-3">
-                        <LayoutDashboard className="h-6 w-6 text-red-600" />
-                      </div>
-                      <div className="ml-5 w-0 flex-1">
-                        <dl>
-                          <dt className="text-sm font-medium text-slate-500 truncate">Failed</dt>
-                          <dd className="text-3xl font-semibold text-slate-900">
-                            {logs.filter(l => l.status === 'failed').length}
-                          </dd>
-                        </dl>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-                <h3 className="text-lg leading-6 font-medium text-slate-900">Recent Activity</h3>
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                  <h3 className="text-lg leading-6 font-medium text-slate-900">System Logs</h3>
                   <select 
                     value={filter}
                     onChange={(e) => setFilter(e.target.value)}
-                    className="block w-full pl-3 pr-10 py-2 text-base border-slate-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md shadow-sm border"
+                    className="block w-full sm:w-auto pl-3 pr-10 py-2 text-base border-slate-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border"
                   >
                     <option value="all">All Logs</option>
-                    <option value="completed">Completed Only</option>
-                    <option value="failed">Failed Only</option>
-                    <option value="edith">Edith Only</option>
-                    <option value="sacha">Sacha Only</option>
-                    <option value="dev">Dev Only</option>
+                    <option value="completed">Completed</option>
+                    <option value="failed">Failed</option>
                   </select>
                 </div>
-              </div>
 
-              {error ? (
-                <div className="rounded-md bg-red-50 p-4 border border-red-200">
-                  <div className="flex">
-                    <div className="ml-3">
-                      <h3 className="text-sm font-medium text-red-800">Error loading logs</h3>
-                      <div className="mt-2 text-sm text-red-700">
-                        <p>{error}</p>
-                      </div>
-                    </div>
+                {error ? (
+                  <div className="rounded-md bg-red-50 p-4 border border-red-200">
+                    <h3 className="text-sm font-medium text-red-800">Error loading logs: {error}</h3>
                   </div>
-                </div>
-              ) : (
-                <LogsTable logs={filteredLogs} isLoading={isLoading} />
-              )}
-            </div>
+                ) : (
+                  <LogsTable logs={filteredLogs} isLoading={isLoading} />
+                )}
+              </div>
+            )}
           </div>
         </main>
       </div>
