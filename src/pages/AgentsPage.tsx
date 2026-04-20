@@ -52,7 +52,7 @@ export function AgentsPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-bold leading-tight text-slate-100 mb-6">Équipe d'Agents</h2>
+        <h2 className="text-2xl font-semibold tracking-tight text-neutral-100 mb-8">Équipe d'Agents</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <AgentCard name="Sacha" role="Analyste de Recherche" color="#3B82F6" logs={logs} />
@@ -62,26 +62,26 @@ export function AgentsPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] overflow-hidden">
-          <div className="p-6 border-b border-white/10 bg-black/10">
-            <h3 className="text-lg font-medium text-slate-200">Flux d'Activité Récente (50 derniers)</h3>
+        <div className="lg:col-span-2 bg-white/[0.02] backdrop-blur-2xl border border-white/[0.05] rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 hover:bg-white/[0.03]">
+          <div className="p-6 border-b border-white/[0.05] bg-[#050505]/50">
+            <h3 className="text-sm font-medium uppercase tracking-wide text-neutral-500">Flux d'Activité Récente</h3>
           </div>
-          <div className="divide-y divide-white/5 max-h-96 overflow-y-auto p-4">
+          <div className="divide-y divide-white/[0.02] max-h-96 overflow-y-auto p-4">
             {logs.slice(0, 50).map(log => (
-              <div key={log.id} className="py-4 flex gap-4 items-start">
-                <div className={`w-2 h-2 mt-2 rounded-full flex-shrink-0 ${log.status === 'completed' ? 'bg-green-500' : 'bg-red-500'}`} />
+              <div key={log.id} className="py-4 flex gap-4 items-start group">
+                <div className={`w-2 h-2 mt-2 rounded-full flex-shrink-0 transition-all ${log.status === 'completed' ? 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.4)]' : 'bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.4)]'}`} />
                 <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className={`px-2 py-0.5 rounded text-xs font-medium text-white ${
-                      log.agent_name.toLowerCase() === 'sacha' ? 'bg-blue-500' : 
-                      log.agent_name.toLowerCase() === 'edith' ? 'bg-purple-500' : 'bg-emerald-500'
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className={`px-2.5 py-1 rounded-md text-[10px] font-semibold uppercase tracking-wider text-white ${
+                      log.agent_name.toLowerCase() === 'sacha' ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30' : 
+                      log.agent_name.toLowerCase() === 'edith' ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30' : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
                     }`}>
                       {log.agent_name}
                     </span>
-                    <span className="text-xs text-slate-400">{new Date(log.created_at).toLocaleString('fr-FR')}</span>
-                    <span className="text-xs text-slate-500 ml-auto bg-slate-100 px-2 py-1 rounded">{log.model_used}</span>
+                    <span className="text-xs font-mono text-neutral-600">{new Date(log.created_at).toLocaleString('fr-FR')}</span>
+                    <span className="text-[10px] font-mono text-neutral-500 ml-auto bg-white/[0.03] border border-white/[0.05] px-2 py-1 rounded-md group-hover:bg-white/[0.05] transition-colors">{log.model_used}</span>
                   </div>
-                  <p className="text-sm text-slate-300">{log.task_description}</p>
+                  <p className="text-sm text-neutral-300 leading-relaxed">{log.task_description}</p>
                 </div>
               </div>
             ))}
@@ -89,47 +89,47 @@ export function AgentsPage() {
         </div>
 
         <div className="space-y-6">
-          <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] p-6">
-            <h3 className="text-lg font-medium text-slate-200 mb-4">Statistiques Globales</h3>
+          <div className="bg-white/[0.02] backdrop-blur-2xl border border-white/[0.05] rounded-2xl shadow-2xl p-6 transition-all duration-300 hover:bg-white/[0.03]">
+            <h3 className="text-sm font-medium uppercase tracking-wide text-neutral-500 mb-6">Statistiques Globales</h3>
             <dl className="grid grid-cols-2 gap-4">
-              <div className="bg-black/20 p-4 rounded-xl border border-white/5 backdrop-blur-sm">
-                <dt className="text-sm font-medium text-slate-400">Tâches (Jour)</dt>
-                <dd className="mt-1 text-2xl font-semibold text-indigo-400">{todayLogs.length}</dd>
+              <div className="bg-[#030303]/50 p-5 rounded-xl border border-white/[0.03] backdrop-blur-sm transition-colors hover:bg-white/[0.02]">
+                <dt className="text-xs font-medium uppercase tracking-wide text-neutral-600">Tâches (Jour)</dt>
+                <dd className="mt-2 text-2xl font-light tracking-tight text-neutral-200">{todayLogs.length}</dd>
               </div>
-              <div className="bg-black/20 p-4 rounded-xl border border-white/5 backdrop-blur-sm">
-                <dt className="text-sm font-medium text-slate-400">Tâches (Semaine)</dt>
-                <dd className="mt-1 text-2xl font-semibold text-indigo-400">{weekLogs.length}</dd>
+              <div className="bg-[#030303]/50 p-5 rounded-xl border border-white/[0.03] backdrop-blur-sm transition-colors hover:bg-white/[0.02]">
+                <dt className="text-xs font-medium uppercase tracking-wide text-neutral-600">Tâches (Semaine)</dt>
+                <dd className="mt-2 text-2xl font-light tracking-tight text-neutral-200">{weekLogs.length}</dd>
               </div>
-              <div className="bg-black/20 p-4 rounded-xl border border-white/5 backdrop-blur-sm">
-                <dt className="text-sm font-medium text-slate-400">Agent Plus Actif</dt>
-                <dd className="mt-1 text-xl font-semibold text-slate-200">{activeAgent?.name || 'N/A'}</dd>
+              <div className="bg-[#030303]/50 p-5 rounded-xl border border-white/[0.03] backdrop-blur-sm transition-colors hover:bg-white/[0.02]">
+                <dt className="text-xs font-medium uppercase tracking-wide text-neutral-600">Agent Plus Actif</dt>
+                <dd className="mt-2 text-xl font-medium tracking-tight text-neutral-300">{activeAgent?.name || 'N/A'}</dd>
               </div>
-              <div className="bg-black/20 p-4 rounded-xl border border-white/5 backdrop-blur-sm">
-                <dt className="text-sm font-medium text-slate-400">Taux Réussite</dt>
-                <dd className="mt-1 text-xl font-semibold text-emerald-400">{successRate}%</dd>
+              <div className="bg-[#030303]/50 p-5 rounded-xl border border-white/[0.03] backdrop-blur-sm transition-colors hover:bg-white/[0.02]">
+                <dt className="text-xs font-medium uppercase tracking-wide text-neutral-600">Taux Réussite</dt>
+                <dd className="mt-2 text-xl font-medium tracking-tight text-emerald-400 drop-shadow-[0_0_8px_rgba(52,211,153,0.3)]">{successRate}%</dd>
               </div>
             </dl>
           </div>
 
-          <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] overflow-hidden">
-            <div className="p-6 border-b border-white/10 bg-black/10">
-              <h3 className="text-lg font-medium text-slate-200">Utilisation Modèles (Aujourd'hui)</h3>
+          <div className="bg-white/[0.02] backdrop-blur-2xl border border-white/[0.05] rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 hover:bg-white/[0.03]">
+            <div className="p-6 border-b border-white/[0.05] bg-[#050505]/50">
+              <h3 className="text-sm font-medium uppercase tracking-wide text-neutral-500">Utilisation Modèles</h3>
             </div>
-            <ul className="divide-y divide-white/5 px-6">
+            <ul className="divide-y divide-white/[0.02] px-6">
               {Object.entries(modelUsage).map(([key, count]) => {
                 const [agent, model] = key.split(' - ')
                 return (
-                  <li key={key} className="py-3 flex justify-between items-center">
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium text-slate-300 text-sm">{agent}</span>
-                      <span className="text-slate-500 text-sm truncate max-w-[150px]" title={model}>{model}</span>
+                  <li key={key} className="py-4 flex justify-between items-center group">
+                    <div className="flex items-center gap-3">
+                      <span className="font-medium text-neutral-300 text-sm">{agent}</span>
+                      <span className="text-neutral-500 text-xs font-mono truncate max-w-[150px] group-hover:text-neutral-400 transition-colors" title={model}>{model}</span>
                     </div>
-                    <span className="font-semibold text-indigo-400 bg-indigo-500/10 px-2 py-1 rounded border border-indigo-500/20">{count}</span>
+                    <span className="text-xs font-semibold text-neutral-300 bg-white/[0.05] px-2.5 py-1 rounded-md border border-white/[0.05]">{count}</span>
                   </li>
                 )
               })}
               {Object.keys(modelUsage).length === 0 && (
-                <li className="py-4 text-center text-sm text-slate-500">Aucune donnée aujourd'hui</li>
+                <li className="py-6 text-center text-sm text-neutral-600">Aucune donnée aujourd'hui</li>
               )}
             </ul>
           </div>

@@ -29,107 +29,106 @@ function App() {
   // })
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] flex">
+    <div className="min-h-screen bg-[#030303] flex text-neutral-200 font-sans">
       {/* Sidebar - Mobile */}
       <div className={`fixed inset-0 z-40 lg:hidden ${sidebarOpen ? 'block' : 'hidden'}`}>
-        <div className="fixed inset-0 bg-slate-900/80" onClick={() => setSidebarOpen(false)} />
-        <div className="fixed inset-y-0 left-0 w-64 bg-slate-900 p-4 transform transition-transform duration-300">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setSidebarOpen(false)} />
+        <div className="fixed inset-y-0 left-0 w-64 bg-[#0a0a0a] border-r border-white/[0.05] p-4 transform transition-transform duration-300">
           <div className="flex items-center justify-between mb-8">
-            <h1 className="text-xl font-bold text-white flex items-center gap-2">
-              <LayoutDashboard className="w-6 h-6 text-indigo-400" />
+            <h1 className="text-xl font-medium tracking-tight text-white flex items-center gap-2">
+              <LayoutDashboard className="w-5 h-5 text-neutral-400" />
               Klaw Logs
             </h1>
-            <button onClick={() => setSidebarOpen(false)} className="text-slate-400 hover:text-white">
-              <X className="w-6 h-6" />
+            <button onClick={() => setSidebarOpen(false)} className="text-neutral-500 hover:text-white transition-colors">
+              <X className="w-5 h-5" />
             </button>
           </div>
-          <nav className="space-y-2">
-            <button onClick={() => { setCurrentPage('dashboard'); setSidebarOpen(false) }} className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg ${currentPage === 'dashboard' ? 'text-indigo-400 bg-slate-800/50' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'}`}>
-              <LayoutDashboard className="w-5 h-5" />
-              Vue Générale
+          <nav className="space-y-1">
+            <button onClick={() => { setCurrentPage('dashboard'); setSidebarOpen(false) }} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 ${currentPage === 'dashboard' ? 'text-white bg-white/[0.04] border border-white/[0.05]' : 'text-neutral-500 hover:text-neutral-300 hover:bg-white/[0.02]'}`}>
+              <LayoutDashboard className="w-4 h-4" />
+              <span className="text-sm font-medium">Vue Générale</span>
             </button>
-            <button onClick={() => { setCurrentPage('agents'); setSidebarOpen(false) }} className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg ${currentPage === 'agents' ? 'text-indigo-400 bg-slate-800/50' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'}`}>
-              <Users className="w-5 h-5" />
-              Équipe d'Agents
+            <button onClick={() => { setCurrentPage('agents'); setSidebarOpen(false) }} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 ${currentPage === 'agents' ? 'text-white bg-white/[0.04] border border-white/[0.05]' : 'text-neutral-500 hover:text-neutral-300 hover:bg-white/[0.02]'}`}>
+              <Users className="w-4 h-4" />
+              <span className="text-sm font-medium">Équipe d'Agents</span>
             </button>
-            <button onClick={() => { setCurrentPage('infra'); setSidebarOpen(false) }} className={`w-full flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-lg ${currentPage === 'infra' ? 'text-indigo-400 bg-slate-800/50' : ''}`}>
-              <Settings className="w-5 h-5" />
-              Infrastructure
+            <button onClick={() => { setCurrentPage('infra'); setSidebarOpen(false) }} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 ${currentPage === 'infra' ? 'text-white bg-white/[0.04] border border-white/[0.05]' : 'text-neutral-500 hover:text-neutral-300 hover:bg-white/[0.02]'}`}>
+              <Settings className="w-4 h-4" />
+              <span className="text-sm font-medium">Infrastructure</span>
             </button>
           </nav>
         </div>
       </div>
 
       {/* Sidebar - Desktop */}
-      <div className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0 bg-slate-900">
-        <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
-          <div className="flex items-center flex-shrink-0 px-4">
-            <h1 className="text-xl font-bold text-white flex items-center gap-2">
-              <LayoutDashboard className="w-6 h-6 text-indigo-400" />
-              Klaw Logs
+      <div className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0 bg-[#050505] border-r border-white/[0.02] z-20">
+        <div className="flex-1 flex flex-col pt-8 pb-4 overflow-y-auto">
+          <div className="flex items-center flex-shrink-0 px-6">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-neutral-800 to-neutral-900 border border-white/[0.05] flex items-center justify-center mr-3 shadow-lg">
+               <LayoutDashboard className="w-4 h-4 text-neutral-300" />
+            </div>
+            <h1 className="text-lg font-semibold tracking-tight text-neutral-100">
+              Klaw<span className="text-neutral-500 font-normal">Logs</span>
             </h1>
           </div>
-          <nav className="mt-8 flex-1 px-4 space-y-2">
-            <button onClick={() => setCurrentPage('dashboard')} className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg ${currentPage === 'dashboard' ? 'text-indigo-400 bg-slate-800/50' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'}`}>
-              <LayoutDashboard className="w-5 h-5" />
-              Vue Générale
+          <nav className="mt-10 flex-1 px-4 space-y-1.5">
+            <button onClick={() => setCurrentPage('dashboard')} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 ${currentPage === 'dashboard' ? 'text-white bg-white/[0.04] border border-white/[0.05] shadow-sm' : 'text-neutral-500 hover:text-neutral-300 hover:bg-white/[0.02]'}`}>
+              <LayoutDashboard className="w-4 h-4" />
+              <span className="text-sm font-medium">Vue Générale</span>
             </button>
-            <button onClick={() => setCurrentPage('agents')} className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg ${currentPage === 'agents' ? 'text-indigo-400 bg-slate-800/50' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'}`}>
-              <Users className="w-5 h-5" />
-              Équipe d'Agents
+            <button onClick={() => setCurrentPage('agents')} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 ${currentPage === 'agents' ? 'text-white bg-white/[0.04] border border-white/[0.05] shadow-sm' : 'text-neutral-500 hover:text-neutral-300 hover:bg-white/[0.02]'}`}>
+              <Users className="w-4 h-4" />
+              <span className="text-sm font-medium">Équipe d'Agents</span>
             </button>
-            <button onClick={() => setCurrentPage('infra')} className={`w-full flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-lg ${currentPage === 'infra' ? 'text-indigo-400 bg-slate-800/50' : ''}`}>
-              <Settings className="w-5 h-5" />
-              Infrastructure
+            <button onClick={() => setCurrentPage('infra')} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 ${currentPage === 'infra' ? 'text-white bg-white/[0.04] border border-white/[0.05] shadow-sm' : 'text-neutral-500 hover:text-neutral-300 hover:bg-white/[0.02]'}`}>
+              <Settings className="w-4 h-4" />
+              <span className="text-sm font-medium">Infrastructure</span>
             </button>
           </nav>
         </div>
-        <div className="flex-shrink-0 flex border-t border-slate-800 p-4">
-          <a href="#" className="flex-shrink-0 w-full group block">
+        <div className="flex-shrink-0 flex border-t border-white/[0.02] p-4">
+          <a href="#" className="flex-shrink-0 w-full group block px-2 py-2 rounded-xl transition-colors hover:bg-white/[0.02]">
             <div className="flex items-center">
               <div>
-                <div className="w-9 h-9 rounded-full bg-slate-700 flex items-center justify-center text-slate-300 font-bold">
+                <div className="w-8 h-8 rounded-full bg-neutral-900 border border-white/[0.05] flex items-center justify-center text-neutral-400 font-medium text-sm">
                   K
                 </div>
               </div>
               <div className="ml-3">
-                <p className="text-sm font-medium text-white">Kram</p>
-                <p className="text-xs font-medium text-slate-400 group-hover:text-slate-300">
-                  View profile
-                </p>
+                <p className="text-sm font-medium text-neutral-300 group-hover:text-white transition-colors">Kram</p>
               </div>
-              <LogOut className="ml-auto w-5 h-5 text-slate-500 group-hover:text-slate-300" />
+              <LogOut className="ml-auto w-4 h-4 text-neutral-600 group-hover:text-neutral-400 transition-colors" />
             </div>
           </a>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 lg:pl-64 flex flex-col">
-        <div className="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-slate-900 border-b border-slate-800">
+      <div className="flex-1 lg:pl-64 flex flex-col min-w-0">
+        <div className="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-[#030303]/80 backdrop-blur-xl border-b border-white/[0.02]">
           <button
             type="button"
-            className="px-4 border-r border-slate-800 text-slate-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 lg:hidden"
+            className="px-4 border-r border-white/[0.02] text-neutral-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-neutral-800 lg:hidden"
             onClick={() => setSidebarOpen(true)}
           >
             <span className="sr-only">Open sidebar</span>
-            <Menu className="h-6 w-6" aria-hidden="true" />
+            <Menu className="h-5 w-5" aria-hidden="true" />
           </button>
           
-          <div className="flex-1 px-4 flex justify-between sm:px-6 lg:max-w-7xl lg:mx-auto lg:px-8">
-            <div className="flex-1 flex">
-              <div className="w-full flex md:ml-0">
+          <div className="flex-1 px-4 flex justify-between sm:px-8 lg:max-w-7xl lg:mx-auto">
+            <div className="flex-1 flex items-center">
+              <div className="w-full flex md:ml-0 max-w-md">
                 <label htmlFor="search-field" className="sr-only">
                   Search
                 </label>
-                <div className="relative w-full text-slate-400 focus-within:text-slate-600">
-                  <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none">
-                    <Search className="h-5 w-5" aria-hidden="true" />
+                <div className="relative w-full text-neutral-500 focus-within:text-neutral-300 transition-colors">
+                  <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none pl-3">
+                    <Search className="h-4 w-4" aria-hidden="true" />
                   </div>
                   <input
                     id="search-field"
-                    className="block w-full h-full pl-8 pr-3 py-2 bg-transparent border-transparent text-slate-200 placeholder-slate-400 focus:outline-none focus:placeholder-slate-300 focus:ring-0 focus:border-transparent sm:text-sm"
-                    placeholder="Search..."
+                    className="block w-full h-9 pl-10 pr-3 py-2 bg-white/[0.02] border border-white/[0.05] rounded-xl text-neutral-200 placeholder-neutral-600 focus:outline-none focus:bg-white/[0.04] focus:border-white/[0.1] transition-all sm:text-sm"
+                    placeholder="Rechercher..."
                     type="search"
                     name="search"
                   />
@@ -137,16 +136,16 @@ function App() {
               </div>
             </div>
             <div className="ml-4 flex items-center md:ml-6">
-              <button className="bg-slate-900 p-1 rounded-full text-slate-400 hover:text-slate-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-indigo-500">
+              <button className="bg-transparent p-1.5 rounded-full text-neutral-500 hover:text-neutral-300 hover:bg-white/[0.04] transition-all focus:outline-none">
                 <span className="sr-only">View notifications</span>
-                <Bell className="h-6 w-6" aria-hidden="true" />
+                <Bell className="h-5 w-5" aria-hidden="true" />
               </button>
             </div>
           </div>
         </div>
 
-        <main className="flex-1 pb-8">
-          <div className="mt-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <main className="flex-1 pb-12 pt-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-8">
             {currentPage === 'dashboard' && <OverviewPage />}
             {currentPage === 'agents' && <AgentsPage />}
             {currentPage === 'infra' && <InfraPage />}
