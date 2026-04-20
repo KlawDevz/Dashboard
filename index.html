@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de Bord - Système</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Supabase JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0A0F1E;
+            color: #E2E8F0;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .active-tab {
+            background: linear-gradient(90deg, #7C3AED, #EC4899);
+            color: white;
+        }
+        
+        .tab {
+            transition: all 0.3s ease;
+        }
+        
+        .tab:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-transition {
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Barre de navigation supérieure -->
+    <nav class="glass-card mx-4 mt-4 p-4 flex justify-between items-center">
+        <div class="text-xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
+            Système Dashboard
+        </div>
+        
+        <div class="flex space-x-2">
+            <button id="dashboard-tab" class="tab active-tab px-4 py-2 rounded-full text-sm font-medium">
+                Tableau de bord
+            </button>
+            <button id="contenu-tab" class="tab px-4 py-2 rounded-full text-sm font-medium">
+                Contenu
+            </button>
+            <button id="agents-tab" class="tab px-4 py-2 rounded-full text-sm font-medium">
+                Agents
+            </button>
+            <button id="taches-tab" class="tab px-4 py-2 rounded-full text-sm font-medium">
+                Tâches
+            </button>
+            <button id="parametres-tab" class="tab px-4 py-2 rounded-full text-sm font-medium">
+                Paramètres
+            </button>
+        </div>
+        
+        <div class="text-sm">
+            <span class="text-amber-400">●</span> Connecté
+        </div>
+    </nav>
+    
+    <!-- Contenu principal -->
+    <main class="p-4 mt-4">
+        <!-- Section Tableau de bord -->
+        <section id="dashboard-section" class="tab-content fade-transition">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Carte 1 -->
+                <div id="card-1" class="glass-card p-6 border-l-4 border-gradient-to-b from-purple-500 to-pink-500">
+                    <h3 class="text-lg font-semibold mb-2">Statistiques</h3>
+                    <p class="text-gray-400">Données globales du système</p>
+                    <div class="mt-4 h-32 flex items-center justify-center">
+                        <canvas id="stats-chart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Carte 2 -->
+                <div id="card-2" class="glass-card p-6 border-l-4 border-cyan-400">
+                    <h3 class="text-lg font-semibold mb-2">Performance</h3>
+                    <p class="text-gray-400">Temps de réponse et charge</p>
+                    <div class="mt-4 h-32 flex items-center justify-center">
+                        <canvas id="performance-chart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Carte 3 -->
+                <div id="card-3" class="glass-card p-6 border-l-4 border-amber-400">
+                    <h3 class="text-lg font-semibold mb-2">Activité</h3>
+                    <p class="text-gray-400">Dernières actions du système</p>
+                    <div class="mt-4 space-y-2">
+                        <div class="text-sm">Chargement des données...</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Section Contenu -->
+        <section id="contenu-section" class="tab-content fade-transition hidden">
+            <div class="glass-card p-6">
+                <h2 class="text-2xl font-bold mb-4">Gestion du Contenu</h2>
+                <p>Contenu de la section Contenu</p>
+            </div>
+        </section>
+        
+        <!-- Section Agents -->
+        <section id="agents-section" class="tab-content fade-transition hidden">
+            <div class="glass-card p-6">
+                <h2 class="text-2xl font-bold mb-4">Gestion des Agents</h2>
+                <p>Contenu de la section Agents</p>
+            </div>
+        </section>
+        
+        <!-- Section Tâches -->
+        <section id="taches-section" class="tab-content fade-transition hidden">
+            <div class="glass-card p-6">
+                <h2 class="text-2xl font-bold mb-4">Gestion des Tâches</h2>
+                <p>Contenu de la section Tâches</p>
+            </div>
+        </section>
+        
+        <!-- Section Paramètres -->
+        <section id="parametres-section" class="tab-content fade-transition hidden">
+            <div class="glass-card p-6">
+                <h2 class="text-2xl font-bold mb-4">Paramètres du Système</h2>
+                <p>Contenu de la section Paramètres</p>
+            </div>
+        </section>
+    </main>
+    
+    <script>
+        // Initialisation de Supabase
+        const supabaseUrl = 'https://ihuqfwgbdafnjymmhqci.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlodXFmd2diZGFmbmp5bW1ocWNpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2OTc2MzUsImV4cCI6MjA5MjI3MzYzNX0.rf8tK4rLbNKoi9lYrv2pkAXWuZWz-6HvM_MHMdfVQAY';
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+        
+        // Gestion des onglets
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Retirer la classe active de tous les onglets
+                tabs.forEach(t => t.classList.remove('active-tab'));
+                
+                // Ajouter la classe active à l'onglet cliqué
+                tab.classList.add('active-tab');
+                
+                // Masquer tous les contenus
+                tabContents.forEach(content => {
+                    content.classList.add('hidden');
+                });
+                
+                // Afficher le contenu correspondant
+                const tabId = tab.id.replace('-tab', '');
+                document.getElementById(`${tabId}-section`).classList.remove('hidden');
+            });
+        });
+        
+        // Animation d'apparition des cartes
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('[id^="card-"]');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('fade-in');
+                }, index * 200);
+            });
+        });
+    </script>
+</body>
+</html>
