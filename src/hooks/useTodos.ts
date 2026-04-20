@@ -26,15 +26,51 @@ export function useTodos() {
       }
 
       setTodos(data || [])
-    } catch (err: any) {
-      setError(err.message || 'Failed to fetch todos')
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message)
+      } else {
+        setError('Failed to fetch todos')
+      }
     } finally {
       setIsLoading(false)
     }
   }
 
   useEffect(() => {
-    fetchTodos()
+    let mounted = true
+    const fetchTodosAsync = async () => {
+      try {
+        setIsLoading(true)
+        setError(null)
+        const { data, error } = await supabase
+          .from('todos')
+          .select('*')
+          .order('created_at', { ascending: false })
+
+        if (error) {
+          if (error.code === '42P01') {
+            if (mounted) setError('MISSING_TABLE')
+          } else {
+            throw error
+          }
+        } else {
+          if (mounted) setTodos(data || [])
+        }
+      } catch (err: unknown) {
+        if (mounted) {
+          if (err instanceof Error) {
+            setError(err.message)
+          } else {
+            setError('Failed to fetch todos')
+          }
+        }
+      } finally {
+        if (mounted) setIsLoading(false)
+      }
+    }
+    fetchTodosAsync()
+    return () => { mounted = false }
   }, [])
 
   const updateTodoStatus = async (id: string, status: Todo['status']) => {
@@ -47,7 +83,7 @@ export function useTodos() {
       if (error) throw error
       
       setTodos(prev => prev.map(t => t.id === id ? { ...t, status, completed: status === 'done' } : t))
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Failed to update status:', err)
     }
   }
@@ -69,7 +105,7 @@ export function useTodos() {
       if (error) throw error
       if (data) setTodos(prev => [data, ...prev])
       return data
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Failed to add todo:', err)
       throw err
     }
@@ -84,7 +120,7 @@ export function useTodos() {
         
       if (error) throw error
       setTodos(prev => prev.filter(t => t.id !== id))
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Failed to delete todo:', err)
       throw err
     }
@@ -103,7 +139,7 @@ export function useTodos() {
         if (data) {
           setTodos(prev => prev.map(t => t.id === id ? data : t))
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error('Failed to update todo:', err)
         throw err
       }

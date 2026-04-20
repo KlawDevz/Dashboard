@@ -9,7 +9,7 @@ interface AgentCardProps {
 
 export function AgentCard({ name, role, color, logs }: AgentCardProps) {
   const agentLogs = logs.filter(log => log.agent_name.toLowerCase() === name.toLowerCase())
-  const isOnline = agentLogs.length > 0 && new Date(agentLogs[0].created_at).getTime() > Date.now() - 24 * 60 * 60 * 1000 // online if active in last 24h
+  const isOnline = agentLogs.length > 0 && new Date(agentLogs[0].created_at).getTime() > new Date().getTime() - 24 * 60 * 60 * 1000 // online if active in last 24h
   
   const today = new Date().toISOString().split('T')[0]
   const todayLogs = agentLogs.filter(log => log.created_at.startsWith(today))

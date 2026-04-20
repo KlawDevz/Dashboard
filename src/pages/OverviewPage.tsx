@@ -26,8 +26,18 @@ ChartJS.register(
 export function OverviewPage() {
   const { logs, isLoading, error } = useAgentLogs()
 
-  if (isLoading) return <div className="p-8 text-slate-300">Chargement...</div>
-  if (error) return <div className="p-8 text-red-500">Erreur : {error}</div>
+  if (isLoading) return (
+    <div className="p-8 space-y-6 animate-pulse">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {[1, 2, 3].map(i => <div key={i} className="h-32 bg-slate-800 rounded-xl"></div>)}
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="h-[400px] bg-slate-800 rounded-xl"></div>
+        <div className="h-[400px] bg-slate-800 rounded-xl"></div>
+      </div>
+    </div>
+  )
+  if (error) return <div className="p-8 text-red-400 bg-red-900/20 rounded-xl border border-red-900/50">Erreur : {error}</div>
 
   const successCount = logs.filter(l => l.status === 'completed').length
   const totalCount = logs.length

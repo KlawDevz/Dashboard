@@ -21,8 +21,12 @@ export function useAgentLogs() {
         }
 
         setLogs(data || [])
-      } catch (err: any) {
-        setError(err.message || 'Failed to fetch logs')
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message)
+        } else {
+          setError('Failed to fetch logs')
+        }
       } finally {
         setIsLoading(false)
       }

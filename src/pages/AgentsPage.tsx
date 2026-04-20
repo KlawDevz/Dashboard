@@ -4,11 +4,27 @@ import { AgentCard } from '../components/Agents/AgentCard'
 export function AgentsPage() {
   const { logs, isLoading, error } = useAgentLogs()
 
-  if (isLoading) return <div className="p-8">Chargement des données agents...</div>
-  if (error) return <div className="p-8 text-red-500">Erreur : {error}</div>
+  if (isLoading) return (
+    <div className="p-8 space-y-8 animate-pulse">
+      <div>
+        <div className="h-8 w-48 bg-slate-800 rounded mb-6"></div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {[1, 2, 3].map(i => <div key={i} className="h-48 bg-slate-800 rounded-xl"></div>)}
+        </div>
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 h-96 bg-slate-800 rounded-xl"></div>
+        <div className="space-y-6">
+          <div className="h-48 bg-slate-800 rounded-xl"></div>
+          <div className="h-48 bg-slate-800 rounded-xl"></div>
+        </div>
+      </div>
+    </div>
+  )
+  if (error) return <div className="p-8 text-red-400 bg-red-900/20 rounded-xl border border-red-900/50">Erreur : {error}</div>
 
   const today = new Date().toISOString().split('T')[0]
-  const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
+  const weekAgo = new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000).toISOString()
 
   const todayLogs = logs.filter(l => l.created_at.startsWith(today))
   const weekLogs = logs.filter(l => l.created_at >= weekAgo)
