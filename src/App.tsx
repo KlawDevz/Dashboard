@@ -128,7 +128,7 @@ function App() {
                   </div>
                   <input
                     id="search-field"
-                    className="block w-full h-full pl-8 pr-3 py-2 border-transparent text-slate-900 placeholder-slate-500 focus:outline-none focus:placeholder-slate-400 focus:ring-0 focus:border-transparent sm:text-sm"
+                    className="block w-full h-full pl-8 pr-3 py-2 bg-transparent border-transparent text-slate-200 placeholder-slate-400 focus:outline-none focus:placeholder-slate-300 focus:ring-0 focus:border-transparent sm:text-sm"
                     placeholder="Search..."
                     type="search"
                     name="search"
