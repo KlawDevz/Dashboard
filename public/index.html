@@ -304,9 +304,9 @@
         // Note: Dans une application de production, ces valeurs devraient être gérées via
         // des variables d'environnement dans GitHub Actions
         const CONFIG = {
-            SUPABASE_URL: '{{SUPABASE_URL}}' || 'https://ihuqfwgbdafnjymmhqci.supabase.co',
+            SUPABASE_URL: '{{SUPABASE_URL}}',
             // Clé anonyme - permissions restreintes
-            SUPABASE_ANON_KEY: '{{SUPABASE_ANON_KEY}}' || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlodXFmd2diZGFmbmp5bW1ocWNpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2OTc2MzUsImV4cCI6MjA5MjI3MzYzNX0.rf8tK4rLbNKoi9lYrv2pkAXWuZWz-6HvM_MHMdfVQAY'
+            SUPABASE_ANON_KEY: '{{SUPABASE_ANON_KEY}}'
         };
         
         // Fonction utilitaire pour formater les dates
