@@ -57,6 +57,37 @@
         .fade-transition {
             transition: opacity 0.3s ease;
         }
+        
+        /* Styles pour les messages de sécurité */
+        .security-warning {
+            background: rgba(255, 100, 100, 0.1);
+            border: 1px solid rgba(255, 100, 100, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin: 16px 0;
+            font-size: 0.9rem;
+        }
+        
+        /* Styles pour les indicateurs de connexion */
+        .connection-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        
+        .status-connected {
+            background-color: #10B981; /* green-500 */
+        }
+        
+        .status-disconnected {
+            background-color: #EF4444; /* red-500 */
+        }
     </style>
 </head>
 <body class="min-h-screen">
@@ -84,8 +115,9 @@
             </button>
         </div>
         
-        <div class="text-sm">
-            <span class="text-amber-400">●</span> Connecté
+        <div class="text-sm connection-status" id="connection-status">
+            <span class="status-indicator status-disconnected" id="status-indicator"></span>
+            <span id="status-text">Déconnecté</span>
         </div>
     </nav>
     
@@ -157,10 +189,64 @@
     </main>
     
     <script>
+        // Configuration de l'application
+        const CONFIG = {
+            SUPABASE_URL: 'https://ihuqfwgbdafnjymmhqci.supabase.co',
+            // Note: Dans une application de production, cette clé devrait être gérée côté serveur
+            // et les opérations sensibles devraient passer par une API intermédiaire
+            SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlodXFmd2diZGFmbmp5bW1ocWNpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2OTc2MzUsImV4cCI6MjA5MjI3MzYzNX0.rf8tK4rLbNKoi9lYrv2pkAXWuZWz-6HvM_MHMdfVQAY'
+        };
+        
+        // Initialisation de Supabase avec une fonction dédiée
+        function initSupabase() {
+            // Vérification de la présence des configurations
+            if (!CONFIG.SUPABASE_URL || !CONFIG.SUPABASE_ANON_KEY) {
+                console.error('Configuration Supabase manquante');
+                return null;
+            }
+            
+            // Initialisation du client Supabase
+            const supabase = supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+            return supabase;
+        }
+        
         // Initialisation de Supabase
-        const supabaseUrl = 'https://ihuqfwgbdafnjymmhqci.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlodXFmd2diZGFmbmp5bW1ocWNpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2OTc2MzUsImV4cCI6MjA5MjI3MzYzNX0.rf8tK4rLbNKoi9lYrv2pkAXWuZWz-6HvM_MHMdfVQAY';
-        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+        const supabase = initSupabase();
+        
+        // Mise à jour de l'indicateur de connexion
+        function updateConnectionStatus(isConnected) {
+            const indicator = document.getElementById('status-indicator');
+            const statusText = document.getElementById('status-text');
+            
+            if (isConnected) {
+                indicator.className = 'status-indicator status-connected';
+                statusText.textContent = 'Connecté';
+            } else {
+                indicator.className = 'status-indicator status-disconnected';
+                statusText.textContent = 'Déconnecté';
+            }
+        }
+        
+        // Vérification de l'état de connexion
+        function checkConnection() {
+            if (supabase) {
+                // Tentative de récupération des données pour vérifier la connexion
+                supabase.from('agent_logs').select('id').limit(1)
+                    .then(response => {
+                        updateConnectionStatus(!response.error);
+                    })
+                    .catch(error => {
+                        updateConnectionStatus(false);
+                    });
+            } else {
+                updateConnectionStatus(false);
+            }
+        }
+        
+        // Vérifier la connexion au chargement de la page
+        document.addEventListener('DOMContentLoaded', function() {
+            checkConnection();
+        });
         
         // Gestion des onglets
         const tabs = document.querySelectorAll('.tab');
