@@ -330,22 +330,21 @@
         // Initialisation de Supabase avec une fonction dédiée
         function initSupabase() {
             // Vérification de la présence des configurations
-            if (!CONFIG.SUPABASE_URL || !CONFIG.SUPABASE_ANON_KEY) {
+            if (!CONFIG.SUPABASE_URL || !CONFIG.SUPABASE_ANON_KEY || CONFIG.SUPABASE_URL.includes("{{")) {
                 console.error('Configuration Supabase manquante');
                 return null;
             }
             
             // Initialisation du client Supabase
-            const supabase = supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
-            return supabase;
+            return supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
         }
         
         // Récupération des logs d'activité
         async function fetchAgentLogs(limit = 10) {
-            if (!supabase) return [];
+            if (!supabaseClient) return [];
             
             try {
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('agent_logs')
                     .select('*')
                     .order('created_at', { ascending: false })
@@ -361,18 +360,18 @@
         
         // Récupération des statistiques
         async function fetchStats() {
-            if (!supabase) return null;
+            if (!supabaseClient) return null;
             
             try {
                 // Compter le nombre total de logs
-                const { count: totalLogs, error: countError } = await supabase
+                const { count: totalLogs, error: countError } = await supabaseClient
                     .from('agent_logs')
                     .select('*', { count: 'exact', head: true });
                 
                 if (countError) throw countError;
                 
                 // Récupérer les logs récents pour l'analyse
-                const { data: recentLogs, error: logsError } = await supabase
+                const { data: recentLogs, error: logsError } = await supabaseClient
                     .from('agent_logs')
                     .select('created_at, status')
                     .order('created_at', { ascending: false })
@@ -397,7 +396,18 @@
         }
         
         // Initialisation de Supabase
-        const supabase = initSupabase();
+        let supabaseClient = null;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            supabaseClient = initSupabase();
+            checkConnection();
+            
+            // Remplacer l'affichage URL si valide
+            const urlDisplay = document.getElementById('supabase-url-display');
+            if (urlDisplay && CONFIG.SUPABASE_URL && !CONFIG.SUPABASE_URL.includes('{{')) {
+                urlDisplay.textContent = CONFIG.SUPABASE_URL;
+            }
+        });
         
         // Mise à jour de l'indicateur de connexion
         function updateConnectionStatus(isConnected) {
@@ -458,9 +468,9 @@
         
         // Vérification de l'état de connexion
         function checkConnection() {
-            if (supabase) {
+            if (supabaseClient) {
                 // Tentative de récupération des données pour vérifier la connexion
-                supabase.from('agent_logs').select('id').limit(1)
+                supabaseClient.from('agent_logs').select('id').limit(1)
                     .then(response => {
                         updateConnectionStatus(!response.error);
                         // Si la connexion est établie, charger les données
@@ -614,11 +624,7 @@
             }
         }
         
-        // Vérifier la connexion au chargement de la page
-        document.addEventListener('DOMContentLoaded', function() {
-            checkConnection();
-        });
-        
+                
         // Gestion des onglets
         const tabs = document.querySelectorAll('.tab');
         const tabContents = document.querySelectorAll('.tab-content');
@@ -637,8 +643,11 @@
                 });
                 
                 // Afficher le contenu correspondant
-                const tabId = tab.id.replace('-tab', '');
-                document.getElementById(`${tabId}-section`).classList.remove('hidden');
+                const sectionId = tab.id.replace('-tab', '-section');
+                const targetSection = document.getElementById(sectionId);
+                if (targetSection) {
+                    targetSection.classList.remove('hidden');
+                }
             });
         });
         
@@ -671,7 +680,7 @@
             // Mettre à jour le statut Supabase dans les paramètres
             if (typeof supabase !== 'undefined' && supabase) {
                 // Vérifier la connexion et mettre à jour l'affichage
-                supabase.from('agent_logs').select('id').limit(1)
+                supabaseClient.from('agent_logs').select('id').limit(1)
                     .then(response => {
                         updateSupabaseStatus(!response.error);
                     })
