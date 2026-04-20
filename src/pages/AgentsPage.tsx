@@ -62,11 +62,11 @@ export function AgentsPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 bg-slate-900 rounded-xl shadow-xl border border-slate-800 overflow-hidden">
-          <div className="p-6 border-b border-slate-800">
+        <div className="lg:col-span-2 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] overflow-hidden">
+          <div className="p-6 border-b border-white/10 bg-black/10">
             <h3 className="text-lg font-medium text-slate-200">Flux d'Activité Récente (50 derniers)</h3>
           </div>
-          <div className="divide-y divide-slate-800 max-h-96 overflow-y-auto p-4">
+          <div className="divide-y divide-white/5 max-h-96 overflow-y-auto p-4">
             {logs.slice(0, 50).map(log => (
               <div key={log.id} className="py-4 flex gap-4 items-start">
                 <div className={`w-2 h-2 mt-2 rounded-full flex-shrink-0 ${log.status === 'completed' ? 'bg-green-500' : 'bg-red-500'}`} />
@@ -89,33 +89,33 @@ export function AgentsPage() {
         </div>
 
         <div className="space-y-6">
-          <div className="bg-slate-900 rounded-xl shadow-xl border border-slate-800 p-6">
+          <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] p-6">
             <h3 className="text-lg font-medium text-slate-200 mb-4">Statistiques Globales</h3>
             <dl className="grid grid-cols-2 gap-4">
-              <div className="bg-[#0f111a] p-4 rounded-lg border border-slate-800/50">
-                <dt className="text-sm font-medium text-slate-500">Tâches (Jour)</dt>
+              <div className="bg-black/20 p-4 rounded-xl border border-white/5 backdrop-blur-sm">
+                <dt className="text-sm font-medium text-slate-400">Tâches (Jour)</dt>
                 <dd className="mt-1 text-2xl font-semibold text-indigo-400">{todayLogs.length}</dd>
               </div>
-              <div className="bg-[#0f111a] p-4 rounded-lg border border-slate-800/50">
-                <dt className="text-sm font-medium text-slate-500">Tâches (Semaine)</dt>
+              <div className="bg-black/20 p-4 rounded-xl border border-white/5 backdrop-blur-sm">
+                <dt className="text-sm font-medium text-slate-400">Tâches (Semaine)</dt>
                 <dd className="mt-1 text-2xl font-semibold text-indigo-400">{weekLogs.length}</dd>
               </div>
-              <div className="bg-[#0f111a] p-4 rounded-lg border border-slate-800/50">
-                <dt className="text-sm font-medium text-slate-500">Agent Plus Actif</dt>
+              <div className="bg-black/20 p-4 rounded-xl border border-white/5 backdrop-blur-sm">
+                <dt className="text-sm font-medium text-slate-400">Agent Plus Actif</dt>
                 <dd className="mt-1 text-xl font-semibold text-slate-200">{activeAgent?.name || 'N/A'}</dd>
               </div>
-              <div className="bg-[#0f111a] p-4 rounded-lg border border-slate-800/50">
-                <dt className="text-sm font-medium text-slate-500">Taux Réussite</dt>
+              <div className="bg-black/20 p-4 rounded-xl border border-white/5 backdrop-blur-sm">
+                <dt className="text-sm font-medium text-slate-400">Taux Réussite</dt>
                 <dd className="mt-1 text-xl font-semibold text-emerald-400">{successRate}%</dd>
               </div>
             </dl>
           </div>
 
-          <div className="bg-slate-900 rounded-xl shadow-xl border border-slate-800 overflow-hidden">
-            <div className="p-6 border-b border-slate-800">
+          <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] overflow-hidden">
+            <div className="p-6 border-b border-white/10 bg-black/10">
               <h3 className="text-lg font-medium text-slate-200">Utilisation Modèles (Aujourd'hui)</h3>
             </div>
-            <ul className="divide-y divide-slate-800 px-6">
+            <ul className="divide-y divide-white/5 px-6">
               {Object.entries(modelUsage).map(([key, count]) => {
                 const [agent, model] = key.split(' - ')
                 return (

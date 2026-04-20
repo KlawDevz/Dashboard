@@ -103,24 +103,24 @@ export function OverviewPage() {
     <div className="space-y-6">
       {/* KPIs */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-xl">
-          <h3 className="text-slate-400 text-sm font-medium">Tâches Totales</h3>
+        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]">
+          <h3 className="text-slate-300 text-sm font-medium">Tâches Totales</h3>
           <p className="text-3xl font-bold text-white mt-2">{totalCount}</p>
         </div>
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-xl">
-          <h3 className="text-slate-400 text-sm font-medium">Taux de Réussite Global</h3>
+        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]">
+          <h3 className="text-slate-300 text-sm font-medium">Taux de Réussite Global</h3>
           <div className="flex items-end gap-2 mt-2">
             <p className="text-3xl font-bold text-white">{successRate}%</p>
-            <p className="text-emerald-500 text-sm font-medium mb-1">OK</p>
+            <p className="text-emerald-400 text-sm font-medium mb-1">OK</p>
           </div>
         </div>
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-xl">
-          <h3 className="text-slate-400 text-sm font-medium">Dernière Action</h3>
+        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]">
+          <h3 className="text-slate-300 text-sm font-medium">Dernière Action</h3>
           {lastAction ? (
             <div className="mt-2">
               <p className="text-white font-medium truncate">{lastAction.agent_name}</p>
-              <p className="text-slate-500 text-xs truncate mt-1">{lastAction.task_description}</p>
-              <p className="text-slate-600 text-xs mt-1">{new Date(lastAction.created_at).toLocaleString('fr-FR')}</p>
+              <p className="text-slate-400 text-xs truncate mt-1">{lastAction.task_description}</p>
+              <p className="text-slate-500 text-xs mt-1">{new Date(lastAction.created_at).toLocaleString('fr-FR')}</p>
             </div>
           ) : (
             <p className="text-slate-500 mt-2">Aucune action</p>
@@ -131,7 +131,7 @@ export function OverviewPage() {
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Chart */}
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-xl flex flex-col h-[400px]">
+        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] flex flex-col h-[400px]">
           <h3 className="text-slate-200 font-medium mb-4">Activité Modèles (24h)</h3>
           <div className="flex-1 relative">
              <Line data={chartData} options={chartOptions} />
@@ -139,8 +139,8 @@ export function OverviewPage() {
         </div>
 
         {/* Live Feed */}
-        <div className="bg-[#0f111a] border border-slate-800 rounded-xl shadow-xl overflow-hidden flex flex-col h-[400px]">
-          <div className="bg-slate-900 border-b border-slate-800 p-3 flex items-center gap-2">
+        <div className="bg-black/20 backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] overflow-hidden flex flex-col h-[400px]">
+          <div className="bg-black/40 border-b border-white/10 p-3 flex items-center gap-2">
             <div className="flex gap-1.5">
               <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
               <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
