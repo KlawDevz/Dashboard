@@ -1,50 +1,46 @@
-name: Deploy to GitHub Pages
+name: Deploy Dashboard to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches: ["main", "master"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
   deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
 
-    - name: Install dependencies
-      run: |
-        npm install -g http-server
+      - name: Build Dashboard
+        run: |
+          mkdir -p dist
+          # Copier le contenu de public dans dist
+          cp -r public/* dist/
+          # Remplacer les variables d'environnement dans le fichier HTML
+          sed -i "s|{{SUPABASE_URL}}|${{ secrets.SUPABASE_URL }}|g" dist/index.html
+          sed -i "s|{{SUPABASE_ANON_KEY}}|${{ secrets.SUPABASE_ANON_KEY }}|g" dist/index.html
 
-    - name: Build project
-      run: |
-        # Pour l'instant, il n'y a pas de build spécifique
-        # Copier les fichiers publics dans le répertoire de déploiement
-        mkdir -p dist
-        cp -r public/* dist/
-        
-        # Remplacer les placeholders par les vraies valeurs
-        if [ -n "$SUPABASE_URL" ]; then
-          find dist -type f -exec sed -i "s|{{SUPABASE_URL}}|$SUPABASE_URL|g" {} +
-        fi
-        
-        if [ -n "$SUPABASE_ANON_KEY" ]; then
-          find dist -type f -exec sed -i "s|{{SUPABASE_ANON_KEY}}|$SUPABASE_ANON_KEY|g" {} +
-        fi
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
 
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./dist
-        publish_branch: gh-pages
-      env:
-        SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-        SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
