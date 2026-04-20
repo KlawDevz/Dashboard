@@ -10,26 +10,26 @@ import {
 } from 'lucide-react'
 import { useState } from 'react'
 import { AgentsPage } from './pages/AgentsPage'
-import { useAgentLogs } from './hooks/useAgentLogs'
-import { LogsTable } from './components/LogsTable'
+import { OverviewPage } from './pages/OverviewPage'
+import { InfraPage } from './pages/InfraPage'
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [currentPage, setCurrentPage] = useState<'dashboard' | 'agents'>('agents')
+  const [currentPage, setCurrentPage] = useState<'dashboard' | 'agents' | 'infra'>('dashboard')
   
   // Dashboard logic preserved
-  const { logs, isLoading, error } = useAgentLogs()
-  const [filter, setFilter] = useState('all')
+  // const { logs, isLoading, error } = useAgentLogs()
+  // const [filter, setFilter] = useState('all')
 
-  const filteredLogs = logs.filter(log => {
-    if (filter === 'all') return true
-    if (filter === 'completed') return log.status === 'completed'
-    if (filter === 'failed') return log.status === 'failed'
-    return log.agent_name.toLowerCase() === filter.toLowerCase()
-  })
+  // const filteredLogs = logs.filter(log => {
+  //   if (filter === 'all') return true
+  //   if (filter === 'completed') return log.status === 'completed'
+  //   if (filter === 'failed') return log.status === 'failed'
+  //   return log.agent_name.toLowerCase() === filter.toLowerCase()
+  // })
 
   return (
-    <div className="min-h-screen bg-slate-50 flex">
+    <div className="min-h-screen bg-[#0a0a0a] flex">
       {/* Sidebar - Mobile */}
       <div className={`fixed inset-0 z-40 lg:hidden ${sidebarOpen ? 'block' : 'hidden'}`}>
         <div className="fixed inset-0 bg-slate-900/80" onClick={() => setSidebarOpen(false)} />
@@ -46,16 +46,16 @@ function App() {
           <nav className="space-y-2">
             <button onClick={() => { setCurrentPage('dashboard'); setSidebarOpen(false) }} className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg ${currentPage === 'dashboard' ? 'text-indigo-400 bg-slate-800/50' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'}`}>
               <LayoutDashboard className="w-5 h-5" />
-              Dashboard
+              Vue Générale
             </button>
             <button onClick={() => { setCurrentPage('agents'); setSidebarOpen(false) }} className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg ${currentPage === 'agents' ? 'text-indigo-400 bg-slate-800/50' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'}`}>
               <Users className="w-5 h-5" />
-              Agents
+              Équipe d'Agents
             </button>
-            <a href="#" className="flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-lg">
+            <button onClick={() => { setCurrentPage('infra'); setSidebarOpen(false) }} className={`w-full flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-lg ${currentPage === 'infra' ? 'text-indigo-400 bg-slate-800/50' : ''}`}>
               <Settings className="w-5 h-5" />
-              Settings
-            </a>
+              Infrastructure
+            </button>
           </nav>
         </div>
       </div>
@@ -72,16 +72,16 @@ function App() {
           <nav className="mt-8 flex-1 px-4 space-y-2">
             <button onClick={() => setCurrentPage('dashboard')} className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg ${currentPage === 'dashboard' ? 'text-indigo-400 bg-slate-800/50' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'}`}>
               <LayoutDashboard className="w-5 h-5" />
-              Dashboard
+              Vue Générale
             </button>
             <button onClick={() => setCurrentPage('agents')} className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg ${currentPage === 'agents' ? 'text-indigo-400 bg-slate-800/50' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'}`}>
               <Users className="w-5 h-5" />
-              Agents
+              Équipe d'Agents
             </button>
-            <a href="#" className="flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-lg">
+            <button onClick={() => setCurrentPage('infra')} className={`w-full flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-lg ${currentPage === 'infra' ? 'text-indigo-400 bg-slate-800/50' : ''}`}>
               <Settings className="w-5 h-5" />
-              Settings
-            </a>
+              Infrastructure
+            </button>
           </nav>
         </div>
         <div className="flex-shrink-0 flex border-t border-slate-800 p-4">
@@ -106,10 +106,10 @@ function App() {
 
       {/* Main Content */}
       <div className="flex-1 lg:pl-64 flex flex-col">
-        <div className="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-white border-b border-slate-200">
+        <div className="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-slate-900 border-b border-slate-800">
           <button
             type="button"
-            className="px-4 border-r border-slate-200 text-slate-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 lg:hidden"
+            className="px-4 border-r border-slate-800 text-slate-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 lg:hidden"
             onClick={() => setSidebarOpen(true)}
           >
             <span className="sr-only">Open sidebar</span>
@@ -137,7 +137,7 @@ function App() {
               </div>
             </div>
             <div className="ml-4 flex items-center md:ml-6">
-              <button className="bg-white p-1 rounded-full text-slate-400 hover:text-slate-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              <button className="bg-slate-900 p-1 rounded-full text-slate-400 hover:text-slate-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-indigo-500">
                 <span className="sr-only">View notifications</span>
                 <Bell className="h-6 w-6" aria-hidden="true" />
               </button>
@@ -147,68 +147,9 @@ function App() {
 
         <main className="flex-1 pb-8">
           <div className="mt-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {currentPage === 'dashboard' && <OverviewPage />}
             {currentPage === 'agents' && <AgentsPage />}
-            {currentPage === 'dashboard' && (
-              <div>
-                <h2 className="text-2xl font-bold leading-tight text-slate-900 mb-6">Dashboard System Logs</h2>
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-3 mb-8">
-                  <div className="bg-white overflow-hidden shadow rounded-lg border border-slate-200 p-5 flex items-center">
-                    <div className="flex-shrink-0 bg-indigo-100 rounded-md p-3">
-                      <LayoutDashboard className="h-6 w-6 text-indigo-600" />
-                    </div>
-                    <div className="ml-5 w-0 flex-1">
-                      <dl>
-                        <dt className="text-sm font-medium text-slate-500 truncate">Total Logs</dt>
-                        <dd className="text-3xl font-semibold text-slate-900">{logs.length}</dd>
-                      </dl>
-                    </div>
-                  </div>
-                  <div className="bg-white overflow-hidden shadow rounded-lg border border-slate-200 p-5 flex items-center">
-                    <div className="flex-shrink-0 bg-green-100 rounded-md p-3">
-                      <LayoutDashboard className="h-6 w-6 text-green-600" />
-                    </div>
-                    <div className="ml-5 w-0 flex-1">
-                      <dl>
-                        <dt className="text-sm font-medium text-slate-500 truncate">Completed</dt>
-                        <dd className="text-3xl font-semibold text-slate-900">{logs.filter(l => l.status === 'completed').length}</dd>
-                      </dl>
-                    </div>
-                  </div>
-                  <div className="bg-white overflow-hidden shadow rounded-lg border border-slate-200 p-5 flex items-center">
-                    <div className="flex-shrink-0 bg-red-100 rounded-md p-3">
-                      <LayoutDashboard className="h-6 w-6 text-red-600" />
-                    </div>
-                    <div className="ml-5 w-0 flex-1">
-                      <dl>
-                        <dt className="text-sm font-medium text-slate-500 truncate">Failed</dt>
-                        <dd className="text-3xl font-semibold text-slate-900">{logs.filter(l => l.status === 'failed').length}</dd>
-                      </dl>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-                  <h3 className="text-lg leading-6 font-medium text-slate-900">System Logs</h3>
-                  <select 
-                    value={filter}
-                    onChange={(e) => setFilter(e.target.value)}
-                    className="block w-full sm:w-auto pl-3 pr-10 py-2 text-base border-slate-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border"
-                  >
-                    <option value="all">All Logs</option>
-                    <option value="completed">Completed</option>
-                    <option value="failed">Failed</option>
-                  </select>
-                </div>
-
-                {error ? (
-                  <div className="rounded-md bg-red-50 p-4 border border-red-200">
-                    <h3 className="text-sm font-medium text-red-800">Error loading logs: {error}</h3>
-                  </div>
-                ) : (
-                  <LogsTable logs={filteredLogs} isLoading={isLoading} />
-                )}
-              </div>
-            )}
+            {currentPage === 'infra' && <InfraPage />}
           </div>
         </main>
       </div>
