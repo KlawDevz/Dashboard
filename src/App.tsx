@@ -6,18 +6,16 @@ import {
   LogOut,
   Menu,
   X,
-  Users,
-  CheckSquare
+  Users
 } from 'lucide-react'
 import { useState } from 'react'
 import { AgentsPage } from './pages/AgentsPage'
-import { TasksPage } from './pages/TasksPage'
 import { useAgentLogs } from './hooks/useAgentLogs'
 import { LogsTable } from './components/LogsTable'
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [currentPage, setCurrentPage] = useState<'dashboard' | 'agents' | 'tasks'>('agents')
+  const [currentPage, setCurrentPage] = useState<'dashboard' | 'agents'>('agents')
   
   // Dashboard logic preserved
   const { logs, isLoading, error } = useAgentLogs()
@@ -54,10 +52,6 @@ function App() {
               <Users className="w-5 h-5" />
               Agents
             </button>
-            <button onClick={() => { setCurrentPage('tasks'); setSidebarOpen(false) }} className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg ${currentPage === 'tasks' ? 'text-indigo-400 bg-slate-800/50' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'}`}>
-              <CheckSquare className="w-5 h-5" />
-              Tâches
-            </button>
             <a href="#" className="flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-lg">
               <Settings className="w-5 h-5" />
               Settings
@@ -83,10 +77,6 @@ function App() {
             <button onClick={() => setCurrentPage('agents')} className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg ${currentPage === 'agents' ? 'text-indigo-400 bg-slate-800/50' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'}`}>
               <Users className="w-5 h-5" />
               Agents
-            </button>
-            <button onClick={() => setCurrentPage('tasks')} className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg ${currentPage === 'tasks' ? 'text-indigo-400 bg-slate-800/50' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'}`}>
-              <CheckSquare className="w-5 h-5" />
-              Tâches
             </button>
             <a href="#" className="flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-lg">
               <Settings className="w-5 h-5" />
@@ -158,7 +148,6 @@ function App() {
         <main className="flex-1 pb-8">
           <div className="mt-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {currentPage === 'agents' && <AgentsPage />}
-            {currentPage === 'tasks' && <TasksPage />}
             {currentPage === 'dashboard' && (
               <div>
                 <h2 className="text-2xl font-bold leading-tight text-slate-900 mb-6">Dashboard System Logs</h2>
