@@ -1,21 +1,15 @@
-import { 
-  LayoutDashboard, 
-  Settings, 
-  Bell, 
-  Search,
-  LogOut,
-  Menu,
-  X,
-  Users
-} from 'lucide-react'
+import { LayoutDashboard, Settings, Bell, Search, LogOut, Menu, X, Users, TerminalSquare, DollarSign, ListTodo } from 'lucide-react'
 import { useState } from 'react'
 import { AgentsPage } from './pages/AgentsPage'
 import { OverviewPage } from './pages/OverviewPage'
 import { InfraPage } from './pages/InfraPage'
+import { GodModePage } from './pages/GodModePage'
+import { CostTrackingPage } from './pages/CostTrackingPage'
+import { TasksPage } from './pages/TasksPage'
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [currentPage, setCurrentPage] = useState<'dashboard' | 'agents' | 'infra'>('dashboard')
+  const [currentPage, setCurrentPage] = useState<'dashboard' | 'agents' | 'infra' | 'godmode' | 'costs' | 'tasks'>('dashboard')
   
   // Dashboard logic preserved
   // const { logs, isLoading, error } = useAgentLogs()
@@ -48,9 +42,21 @@ function App() {
               <LayoutDashboard className="w-4 h-4" />
               <span className="text-sm font-medium">Vue Générale</span>
             </button>
+            <button onClick={() => { setCurrentPage('tasks'); setSidebarOpen(false) }} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 ${currentPage === 'tasks' ? 'text-white bg-white/[0.04] border border-white/[0.05]' : 'text-neutral-500 hover:text-neutral-300 hover:bg-white/[0.02]'}`}>
+              <ListTodo className="w-4 h-4" />
+              <span className="text-sm font-medium">Tâches</span>
+            </button>
             <button onClick={() => { setCurrentPage('agents'); setSidebarOpen(false) }} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 ${currentPage === 'agents' ? 'text-white bg-white/[0.04] border border-white/[0.05]' : 'text-neutral-500 hover:text-neutral-300 hover:bg-white/[0.02]'}`}>
               <Users className="w-4 h-4" />
               <span className="text-sm font-medium">Équipe d'Agents</span>
+            </button>
+            <button onClick={() => { setCurrentPage('costs'); setSidebarOpen(false) }} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 ${currentPage === 'costs' ? 'text-white bg-white/[0.04] border border-white/[0.05]' : 'text-neutral-500 hover:text-neutral-300 hover:bg-white/[0.02]'}`}>
+              <DollarSign className="w-4 h-4" />
+              <span className="text-sm font-medium">Cost Tracking</span>
+            </button>
+            <button onClick={() => { setCurrentPage('godmode'); setSidebarOpen(false) }} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 ${currentPage === 'godmode' ? 'text-white bg-white/[0.04] border border-white/[0.05]' : 'text-neutral-500 hover:text-neutral-300 hover:bg-white/[0.02]'}`}>
+              <TerminalSquare className="w-4 h-4" />
+              <span className="text-sm font-medium">God Mode</span>
             </button>
             <button onClick={() => { setCurrentPage('infra'); setSidebarOpen(false) }} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 ${currentPage === 'infra' ? 'text-white bg-white/[0.04] border border-white/[0.05]' : 'text-neutral-500 hover:text-neutral-300 hover:bg-white/[0.02]'}`}>
               <Settings className="w-4 h-4" />
@@ -76,9 +82,21 @@ function App() {
               <LayoutDashboard className="w-4 h-4" />
               <span className="text-sm font-medium">Vue Générale</span>
             </button>
+            <button onClick={() => setCurrentPage('tasks')} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 ${currentPage === 'tasks' ? 'text-white bg-white/[0.04] border border-white/[0.05] shadow-sm' : 'text-neutral-500 hover:text-neutral-300 hover:bg-white/[0.02]'}`}>
+              <ListTodo className="w-4 h-4" />
+              <span className="text-sm font-medium">Tâches</span>
+            </button>
             <button onClick={() => setCurrentPage('agents')} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 ${currentPage === 'agents' ? 'text-white bg-white/[0.04] border border-white/[0.05] shadow-sm' : 'text-neutral-500 hover:text-neutral-300 hover:bg-white/[0.02]'}`}>
               <Users className="w-4 h-4" />
               <span className="text-sm font-medium">Équipe d'Agents</span>
+            </button>
+            <button onClick={() => setCurrentPage('costs')} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 ${currentPage === 'costs' ? 'text-white bg-white/[0.04] border border-white/[0.05] shadow-sm' : 'text-neutral-500 hover:text-neutral-300 hover:bg-white/[0.02]'}`}>
+              <DollarSign className="w-4 h-4" />
+              <span className="text-sm font-medium">Cost Tracking</span>
+            </button>
+            <button onClick={() => setCurrentPage('godmode')} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 ${currentPage === 'godmode' ? 'text-white bg-white/[0.04] border border-white/[0.05] shadow-sm' : 'text-neutral-500 hover:text-neutral-300 hover:bg-white/[0.02]'}`}>
+              <TerminalSquare className="w-4 h-4" />
+              <span className="text-sm font-medium">God Mode</span>
             </button>
             <button onClick={() => setCurrentPage('infra')} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 ${currentPage === 'infra' ? 'text-white bg-white/[0.04] border border-white/[0.05] shadow-sm' : 'text-neutral-500 hover:text-neutral-300 hover:bg-white/[0.02]'}`}>
               <Settings className="w-4 h-4" />
@@ -149,6 +167,9 @@ function App() {
             {currentPage === 'dashboard' && <OverviewPage />}
             {currentPage === 'agents' && <AgentsPage />}
             {currentPage === 'infra' && <InfraPage />}
+            {currentPage === 'godmode' && <GodModePage />}
+            {currentPage === 'costs' && <CostTrackingPage />}
+            {currentPage === 'tasks' && <TasksPage />}
           </div>
         </main>
       </div>
